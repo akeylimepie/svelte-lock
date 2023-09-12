@@ -2,11 +2,7 @@ import { get, readonly, derived } from 'svelte/store'
 import { locked } from './store.js'
 
 export function lock (name: string) {
-    locked.update((set) => {
-        set.add(name)
-
-        return set
-    })
+    locked.update((set) => set.add(name))
 
     return release.bind(undefined, name)
 }
