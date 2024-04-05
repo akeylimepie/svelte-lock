@@ -1,6 +1,8 @@
 import { get, readonly, derived, readable } from 'svelte/store'
 import { getLockContext } from '$lib/context'
 
+export { initLockContext } from './context'
+
 export function getLocker () {
     const locked = getLockContext()
 
