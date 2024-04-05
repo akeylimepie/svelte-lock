@@ -1,5 +1,5 @@
 import { writable, type Writable } from 'svelte/store'
-import { getContext, setContext } from 'svelte'
+import { getContext, hasContext, setContext } from 'svelte'
 
 const contextKey = Symbol()
 
@@ -10,5 +10,8 @@ export function initLockContext () {
 }
 
 export function getLockContext () {
+    if (!hasContext(contextKey))
+        throw new Error('Locker context is not initialized')
+
     return getContext<LockAware>(contextKey)
 }
