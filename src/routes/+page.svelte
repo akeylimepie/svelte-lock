@@ -2,6 +2,7 @@
     import Item from './components/Item.svelte'
     import LockButton from './components/LockButton.svelte'
     import MountLock from './components/MountLock.svelte'
+    import { initLockContext } from '$lib/context'
 
     const list = [
         {
@@ -25,6 +26,8 @@
     ]
 
     let autoLock = false
+
+    initLockContext()
 </script>
 
 {#each list as group}

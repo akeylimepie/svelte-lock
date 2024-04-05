@@ -1,10 +1,12 @@
 <script lang="ts">
-    import { observeLock } from '$lib'
+    import { getLocker } from '$lib'
 
     export let group: string
     export let name: string
 
-    const isLocked = observeLock(group)
+    const locker = getLocker()
+
+    const isLocked = locker.observe(group)
 </script>
 
 {#if $isLocked}

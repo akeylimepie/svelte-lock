@@ -1,10 +1,14 @@
 <script lang="ts">
     import { onMount } from 'svelte'
-    import { lock } from '$lib'
+    import { getLocker } from '$lib'
 
     export let id: string
 
-    onMount(lock.bind(undefined, id))
+    const locker = getLocker()
+
+    onMount(() => {
+        return locker.lock(id)
+    })
 </script>
 
 <p>{id} mount-locked</p>

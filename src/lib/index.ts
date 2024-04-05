@@ -1,24 +1,33 @@
-import { get, readonly, derived } from 'svelte/store'
-import { locked } from './store.js'
+import { get, readonly, derived, readable } from 'svelte/store'
+import { getLockContext } from '$lib/context'
 
-export function lock (name: string) {
-    locked.update((set) => set.add(name))
+export function getLocker () {
+    const locked = getLockContext()
 
-    return release.bind(undefined, name)
-}
+    return {
+        lock (name: string) {
+            locked.update((set) => set.add(name))
 
-export function release (name: string) {
-    locked.update((set) => {
-        set.delete(name)
+            return () => this.release(name)
+        },
+        release (name: string) {
+            locked.update((set) => {
+                set.delete(name)
 
-        return set
-    })
-}
+                return set
+            })
+        },
+        observe (name?: string) {
+            if (name) {
+                const locked = getLockContext()
 
-export function observeLock (name: string | undefined) {
-    return typeof name === 'undefined' ? undefined : readonly(derived(locked, ($set) => $set.has(name)))
-}
+                return readonly(derived(locked, ($locked) => $locked.has(name)))
+            }
 
-export function isLocked (name: string) {
-    return get(locked).has(name)
+            return readable(false)
+        },
+        isLocked (name: string) {
+            return get(locked).has(name)
+        }
+    }
 }
