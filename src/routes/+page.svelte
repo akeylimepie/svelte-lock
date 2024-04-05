@@ -2,7 +2,7 @@
     import Item from './components/Item.svelte'
     import LockButton from './components/LockButton.svelte'
     import MountLock from './components/MountLock.svelte'
-    import { initLockContext } from '$lib/context'
+    import { initLockContext } from '$lib'
 
     const list = [
         {
