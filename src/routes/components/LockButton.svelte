@@ -1,16 +1,17 @@
 <script lang="ts">
     import { getLocker } from '$lib'
+    import type { Key } from '$lib/context'
 
-    export let id: string
+    export let id: Key
 
     const locker = getLocker()
-    const isLocked = locker.observe(id)
+    const isLocked = locker.observe([id])
 
     const toggleLock = () => {
         if ($isLocked)
-            locker.release(id)
+            locker.release([id])
         else
-            locker.lock(id)
+            locker.lock([id])
     }
 </script>
 

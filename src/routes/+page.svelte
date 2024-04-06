@@ -6,7 +6,7 @@
 
     const list = [
         {
-            id: 'foo',
+            id: 'foobar',
             items: [
                 'Lorem Ipsum',
                 'is simply dummy text',
@@ -14,7 +14,7 @@
             ]
         },
         {
-            id: 'bar',
+            id: Symbol(),
             items: [
                 'and typesetting industry',
                 'Lorem Ipsum',
@@ -26,6 +26,7 @@
     ]
 
     let autoLock = false
+    const autoLockKey = Symbol()
 
     initLockContext()
 </script>
@@ -35,7 +36,7 @@
     <ul>
         {#each group.items as item}
             <li>
-                <Item name={item} group={group.id}/>
+                <Item name={item} lockingKeys={[autoLockKey,group.id]}/>
             </li>
         {/each}
     </ul>
@@ -43,9 +44,7 @@
 
 {#if autoLock}
     <button on:click={()=>autoLock=false}>remove mount-lock</button>
-    {#each list as group}
-        <MountLock id={group.id}/>
-    {/each}
+    <MountLock id={autoLockKey}/>
 {:else}
     <button on:click={()=>autoLock=true}>add mount-lock</button>
 {/if}
