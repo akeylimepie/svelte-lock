@@ -1,5 +1,5 @@
 import { get, readonly, derived } from 'svelte/store'
-import { getLockContext, type Key } from '$lib/context'
+import { getLockContext, type LockKey } from '$lib/context'
 
 export { initLockContext } from './context'
 
@@ -7,7 +7,7 @@ export function getLocker () {
     const locked = getLockContext()
 
     return {
-        lock (values: Array<Key>) {
+        lock (values: Array<LockKey>) {
             locked.update((collection) => {
                 values.forEach(value => collection.add(value))
                 return collection
@@ -15,18 +15,18 @@ export function getLocker () {
 
             return () => this.release(values)
         },
-        release (values: Array<Key>) {
+        release (values: Array<LockKey>) {
             locked.update((collection) => {
                 values.forEach(value => collection.delete(value))
                 return collection
             })
         },
-        observe (values: Array<Key>) {
+        observe (values: Array<LockKey>) {
             return readonly(derived(locked, (collection, set) => {
                 set(values.some((value) => collection.has(value)))
             }, false))
         },
-        isLocked (values: Array<Key>) {
+        isLocked (values: Array<LockKey>) {
             const collection = get(locked)
 
             return values.some((value) => collection.has(value))

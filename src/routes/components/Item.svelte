@@ -1,8 +1,8 @@
 <script lang="ts">
     import { getLocker } from '$lib'
-    import type { Key } from '$lib/context'
+    import type { LockKey } from '$lib/context'
 
-    export let lockingKeys: Key[]
+    export let lockingKeys: LockKey[]
     export let name: string
 
     const locker = getLocker()

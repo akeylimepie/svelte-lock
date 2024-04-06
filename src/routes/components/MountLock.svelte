@@ -1,9 +1,9 @@
 <script lang="ts">
     import { onMount } from 'svelte'
     import { getLocker } from '$lib'
-    import type { Key } from '$lib/context'
+    import type { LockKey } from '$lib/context'
 
-    export let id: Key
+    export let id: LockKey
 
     const locker = getLocker()
 
