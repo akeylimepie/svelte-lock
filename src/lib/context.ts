@@ -3,7 +3,7 @@ import { getContext, hasContext, setContext } from 'svelte'
 
 const contextKey = Symbol()
 
-export type LockKey = string | object | symbol
+export type LockKey = string | symbol
 
 type LockAware = Writable<Set<LockKey>>
 
