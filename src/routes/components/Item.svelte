@@ -1,13 +1,17 @@
 <script lang="ts">
-    import { getLocker } from '$lib'
-    import type { LockKey } from '$lib/context'
+    import { getLocker, type LockKeys } from '$lib'
+    import { writable } from 'svelte/store'
 
-    export let lockingKeys: LockKey[]
+    export let lockingKeys: LockKeys = []
     export let name: string
 
     const locker = getLocker()
 
-    const isLocked = locker.observe(lockingKeys)
+    const lockingKeysStore = writable<LockKeys>(lockingKeys)
+
+    $: $lockingKeysStore = lockingKeys
+
+    const isLocked = locker.observe(lockingKeysStore)
 </script>
 
 {#if $isLocked}
