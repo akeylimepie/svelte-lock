@@ -25,7 +25,7 @@
         }
     ]
 
-    let autoLock = false
+    let autoLock = $state(false)
     const autoLockKey = Symbol()
 
     initLockContext()
@@ -43,8 +43,8 @@
 {/each}
 
 {#if autoLock}
-    <button on:click={()=>autoLock=false}>remove mount-lock</button>
+    <button onclick={()=>autoLock=false}>remove mount-lock</button>
     <MountLock id={autoLockKey}/>
 {:else}
-    <button on:click={()=>autoLock=true}>add mount-lock</button>
+    <button onclick={()=>autoLock=true}>add mount-lock</button>
 {/if}

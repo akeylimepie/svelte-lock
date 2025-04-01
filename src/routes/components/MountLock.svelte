@@ -3,7 +3,7 @@
     import { getLocker } from '$lib'
     import type { LockKey } from '$lib/context'
 
-    export let id: LockKey
+    let { id }: { id: LockKey } = $props();
 
     const locker = getLocker()
 

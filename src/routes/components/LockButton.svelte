@@ -1,24 +1,20 @@
 <script lang="ts">
-    import { getLocker, type LockKeys } from '$lib'
-    import type { LockKey } from '$lib/context'
-    import { writable } from 'svelte/store'
+    import { getLocker, type LockKey } from '$lib'
 
-    export let id: LockKey
+    let { id }: { id: LockKey } = $props();
 
     const locker = getLocker()
 
-    const lockingKeysStore = writable<LockKeys>([id])
-
-    const isLocked = locker.observe(lockingKeysStore)
+    let state = locker.observe([id])
 
     const toggleLock = () => {
-        if ($isLocked)
+        if (state.isLocked)
             locker.release([id])
         else
             locker.lock([id])
     }
 </script>
 
-<button on:click={toggleLock}>
-    {#if $isLocked}unlock{:else}lock{/if}
+<button onclick={()=>toggleLock()}>
+    {#if state.isLocked}unlock{:else}lock{/if}
 </button>

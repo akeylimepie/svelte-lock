@@ -1,2 +1,2 @@
 export * from './context'
-export * from './locker'
+export * from './locker.svelte'
