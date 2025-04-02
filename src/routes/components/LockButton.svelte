@@ -1,20 +1,18 @@
 <script lang="ts">
-    import { getLocker, type LockKey } from '$lib'
+    import { type LockKey, useLock } from '$lib'
 
     let { id }: { id: LockKey } = $props();
 
-    const locker = getLocker()
-
-    let state = locker.observe([id])
+    const key = useLock(id)
 
     const toggleLock = () => {
-        if (state.isLocked)
-            locker.release([id])
+        if (key.isLocked)
+            key.release()
         else
-            locker.lock([id])
+            key.lock()
     }
 </script>
 
 <button onclick={()=>toggleLock()}>
-    {#if state.isLocked}unlock{:else}lock{/if}
+    {#if key.isLocked}unlock{:else}lock{/if}
 </button>

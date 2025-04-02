@@ -36,7 +36,7 @@
     <ul>
         {#each group.items as item}
             <li>
-                <Item name={item} lockingKeys={[autoLockKey,group.id]}/>
+                <Item name={item} lockingKeys={[autoLockKey, group.id]}/>
             </li>
         {/each}
     </ul>

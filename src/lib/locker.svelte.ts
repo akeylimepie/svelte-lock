@@ -3,19 +3,17 @@ import { getLockContext, type LockKey } from '$lib/context'
 export function getLocker() {
     const locked = getLockContext()
 
-    return {
-        lock(values: LockKey[]) {
-            values.forEach(value => locked.add(value))
+    const locker = {
+        lock(keys: LockKey[]) {
+            keys.forEach(key => locked.add(key))
 
-            return () => this.release(values)
+            return () => locker.release(keys)
         },
-        release(values: LockKey[]) {
-            values.forEach(value => locked.delete(value))
+        release(keys: LockKey[]) {
+            keys.forEach(key => locked.delete(key))
         },
-        observe(values: LockKey[]) {
-            let isLocked = $derived.by(() => {
-                return values.some(value => locked.has(value))
-            })
+        observe(keys: LockKey[]) {
+            let isLocked = $derived(keys.some(key => locked.has(key)))
 
             return {
                 get isLocked() {
@@ -23,8 +21,26 @@ export function getLocker() {
                 }
             }
         },
-        isLocked(values: LockKey[]) {
-            return values.some(value => locked.has(value))
+        isLocked(keys: LockKey[]) {
+            return locker.observe(keys).isLocked
         }
+    }
+
+    return locker
+}
+
+export function useLock(keys: LockKey | LockKey[] = Symbol()) {
+    const normalizedKeys = Array.isArray(keys) ? keys : [keys]
+
+    const locker = getLocker()
+
+    const observer = locker.observe(normalizedKeys)
+
+    return {
+        get isLocked() {
+            return observer.isLocked
+        },
+        lock: () => locker.lock(normalizedKeys),
+        release: () => locker.release(normalizedKeys)
     }
 }
