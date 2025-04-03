@@ -98,6 +98,7 @@ Must be called once in a root-level component.
 Returns an object for observing and controlling a specific lock or group of locks.
 If no key is provided, a unique symbol will be used automatically.
 
+- `keys: LockKey[]` — the list of keys used for this lock
 - `isLocked: boolean` — reactive value; `true` if any of the provided keys are currently locked.
 - `lock(): void` — locks all provided keys. Already locked keys stay locked.
 - `release(): void` — removes the lock for all provided keys.

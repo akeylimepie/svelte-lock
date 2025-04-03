@@ -37,6 +37,7 @@ export function useLock(keys: LockKey | LockKey[] = Symbol()) {
     const observer = locker.observe(normalizedKeys)
 
     return {
+        keys: normalizedKeys,
         get isLocked() {
             return observer.isLocked
         },
