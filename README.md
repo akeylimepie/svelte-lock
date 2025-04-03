@@ -3,7 +3,7 @@
 [![version](https://badgen.now.sh/npm/v/svelte-lock)](https://www.npmjs.com/package/svelte-lock)
 [![downloads](https://badgen.now.sh/npm/dm/svelte-lock)](https://www.npmjs.com/package/svelte-lock)
 
-Reactive lock manager for Svelte 5 with runes
+Reactive lock manager for Svelte 5
 
 ## Installation
 
