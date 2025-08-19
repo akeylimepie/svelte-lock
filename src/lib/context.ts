@@ -8,12 +8,12 @@ export type LockKey = string | symbol
 type LockAware = SvelteSet<LockKey>
 
 export function initLockContext() {
-    setContext<LockAware>(contextKey, new SvelteSet())
+    return setContext<LockAware>(contextKey, new SvelteSet())
 }
 
 export function getLockContext() {
     if (!hasContext(contextKey))
-        throw new Error('Locker context is not initialized')
+        return initLockContext()
 
     return getContext<LockAware>(contextKey)
 }

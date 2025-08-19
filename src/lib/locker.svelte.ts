@@ -1,23 +1,29 @@
 import { getLockContext, type LockKey } from '$lib/context'
 
 export function getLocker() {
-    const locked = getLockContext()
+    const lock = getLockContext()
 
     const locker = {
         lock(keys: LockKey[]) {
-            keys.forEach(key => locked.add(key))
+            keys.forEach(key => lock.add(key))
 
             return () => locker.release(keys)
         },
         release(keys: LockKey[]) {
-            keys.forEach(key => locked.delete(key))
+            keys.forEach(key => lock.delete(key))
         },
         observe(keys: LockKey[]) {
-            let isLocked = $derived(keys.some(key => locked.has(key)))
+            let locked = $derived(keys.some(key => lock.has(key)))
 
             return {
+                /**
+                 * @deprecated Use `locked` instead
+                 */
                 get isLocked() {
-                    return isLocked
+                    return locked
+                },
+                get locked() {
+                    return locked
                 }
             }
         },
@@ -38,8 +44,14 @@ export function useLock(keys: LockKey | LockKey[] = Symbol()) {
 
     return {
         keys: normalizedKeys,
+        /**
+         * @deprecated Use `locked` instead
+         */
         get isLocked() {
-            return observer.isLocked
+            return observer.locked
+        },
+        get locked() {
+            return observer.locked
         },
         lock: () => locker.lock(normalizedKeys),
         release: () => locker.release(normalizedKeys)
